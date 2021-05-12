@@ -3,12 +3,25 @@
 var canvas;
 var canvasContext;
 
+// defining our ball
+var ballX = 50;
+
 // when the pages loads
 window.onload = function() {
     // get the html element with id of map
     canvas = document.getElementById('map');
     // context is for drawing graphics
     canvasContext = canvas.getContext('2d');
+    // calling the function for drawing all the elements with interval of 1 seceond
+    var framesPerSecond = 30;
+    setInterval(drawAllElements, 1000/framesPerSecond);
+
+}
+
+// function for drawing all the elements
+function drawAllElements() {
+
+    ballX = ballX + 5;
 
     // filling the canvas with black color
     canvasContext.fillStyle = 'black';
@@ -21,5 +34,5 @@ window.onload = function() {
     canvasContext.fillRect(300, 200, 400, 400);
 
     canvasContext.fillStyle = "blue";
-    canvasContext.fillRect(250, 150, 100, 100);
+    canvasContext.fillRect(ballX, 100, 10, 10);
 }
