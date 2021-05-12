@@ -6,13 +6,15 @@
 
 .tile {
     display: inline-block;
-    width: 50px;
-    height: 50px;
+    width: 12.7%;
+    height: 121px;
     margin: -2px;
 }
 
 .border {
-    background-color: black;
+    background-image: url(./images/wall.jpg);
+    display: inline-block;
+    margin: -2px;
 }
 
 .first-side {
@@ -24,5 +26,13 @@
 }
 
 .map-tile {
-    background-color: red;
+    background-color: black;
+}
+
+.main-container {
+    width: 100%;
+}
+
+#map {
+    width: 100%;
 }
