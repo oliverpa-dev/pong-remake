@@ -46,11 +46,20 @@ function drawAllElements() {
     // canvas.width, canvas-height - bottom right corner
     colorRect(0,0, canvas.width, canvas.height, 'black');
     colorRect(0, 200, 10 , 80, 'white');
-    colorRect(ballX, 100, 10, 10, 'white');
+    // drawing the ball
+    colorCircle(ballX, 150, 10, 'white');
 }
 
-// function that simplifies the code
+// function that simplifies the code for rect
 function colorRect(leftX, topY, width, height, drawColor) {
     canvasContext.fillStyle = drawColor;
     canvasContext.fillRect(leftX, topY, width, height);
+}
+
+// function that simplifies the code for arc (ball)
+function colorCircle(centerX, centerY, radius, drawColor) {
+    canvasContext.fillStyle = drawColor;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    canvasContext.fill();
 }
