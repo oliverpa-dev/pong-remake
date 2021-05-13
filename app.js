@@ -10,11 +10,13 @@ var ballY = 50;
 
 // speed of the ball
 var ballSpeedX = 10;
-var ballSpeedY = 4;
+var ballSpeedY = 10;
 
 // players paddle
 var paddle1Y = 250;
+var paddle2Y = 250;
 const paddleHeight = 100;
+const paddleThickness = 10;
 
 // function that caluclates the position of our mouse 
 function calculateMousePosition(evt) {
@@ -28,6 +30,24 @@ function calculateMousePosition(evt) {
     return {
         x:mouseX,
         y:mouseY
+    }
+}
+
+// function that resets the ball if it hits one of the sides
+function resetBall() {
+    ballSpeedX = -ballSpeedX;
+    ballX = canvas.width / 2;
+    bally = canvas.width / 2;
+}
+
+// function for the computer paddle
+function computerMovement() {
+    // finding center of the right paddle
+    var paddle2YCenter = paddle2Y + (paddleHeight/2);
+    if(paddle2YCenter < ballY - 35) {
+        paddle2Y += 10;
+    } else if(paddle2YCenter > ballY + 35) {
+        paddle2Y -= 10;
     }
 }
 
@@ -57,18 +77,33 @@ window.onload = function() {
 
 //function for moving the ball
 function moveEverything() {
+    computerMovement();
     ballX = ballX + ballSpeedX;
     ballY = ballY + ballSpeedY;
     // if it exits the canvas width - flip the direction
     if(ballX > canvas.width) {
-        ballSpeedX = -ballSpeedX;
+        // if it is above of the bottom of the paddle
+        // and bellow of the top of the battle, hit the ball
+        if(ballY > paddle2Y && ballY < paddle2Y + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            // else reset
+            resetBall();
+        }
     }
     if(ballY > canvas.height) {
         ballSpeedY = -ballSpeedY;
     }
     // if it exits the canvas width - flip the direction
     if(ballX < 0) {
-        ballSpeedX = -ballSpeedX;
+        // if it is above of the bottom of the paddle
+        // and bellow of the top of the battle, hit the ball
+        if(ballY > paddle1Y && ballY < paddle1Y + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            // else reset
+            resetBall();
+        }
     }
     if(ballY < 0) {
         ballSpeedY = -ballSpeedY;
@@ -80,7 +115,10 @@ function drawAllElements() {
     // 0,0 is for x,y coordinates - top left corner
     // canvas.width, canvas-height - bottom right corner
     colorRect(0,0, canvas.width, canvas.height, 'black');
-    colorRect(0, paddle1Y, 10 , paddleHeight, 'white');
+    // first paddle
+    colorRect(0, paddle1Y, paddleThickness , paddleHeight, 'white');
+    // second paddle
+    colorRect(canvas.width - 10, paddle2Y, paddleThickness, paddleHeight, 'white');
     // drawing the ball
     colorCircle(ballX, ballY, 10, 'white');
 }
