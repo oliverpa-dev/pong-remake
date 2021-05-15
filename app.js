@@ -150,6 +150,12 @@ function moveEverything() {
     }
 }
 
+function drawNet() {
+    for (var i = 0; i < canvas.height; i+=40) {
+        colorRect(canvas.width / 2 - 1, i+5, 2, 25, 'white');
+    }
+}
+
 // function for drawing all the elements
 function drawAllElements() {
     // 0,0 is for x,y coordinates - top left corner
@@ -165,6 +171,7 @@ function drawAllElements() {
         canvasContext.fillText('Click in order to continue', 450, 400);
         return;
     }
+    drawNet();
     // first paddle
     colorRect(0, paddle1Y, paddleThickness , paddleHeight, 'white');
     // second paddle
@@ -175,6 +182,7 @@ function drawAllElements() {
     canvasContext.fillText(player1Score, 200, 100);
     canvasContext.fillText(player2Score, canvas.width - 200, 100);
 }
+
 
 // function that simplifies the code for rect
 function colorRect(leftX, topY, width, height, drawColor) {
