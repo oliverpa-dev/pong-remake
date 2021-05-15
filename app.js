@@ -62,6 +62,15 @@ function computerMovement() {
     }
 }
 
+// function for reseting the game
+function handleMouseClick(evt) {
+    if(showWinningScreen) {
+        player1Score = 0;
+        player2Score = 0;
+        showWinningScreen = false;
+    }
+}
+
 // when the pages loads
 window.onload = function() {
     if(showWinningScreen) {
@@ -78,6 +87,9 @@ window.onload = function() {
         drawAllElements();
         moveEverything();
     }, 1000/framesPerSecond);
+
+    // event listener for mouseclik that resets the game
+    canvas.addEventListener('mousedown', handleMouseClick);
 
     // adding event listener for mousemove
     canvas.addEventListener('mousemove', function(evt) {
@@ -145,7 +157,12 @@ function drawAllElements() {
     colorRect(0,0, canvas.width, canvas.height, 'black');
     if(showWinningScreen) {
         canvasContext.fillStyle = 'white';
-        canvasContext.fillText('press any key in order to continue',100,100);
+        if(player1Score = winningScore) {
+            canvasContext.fillText('Player 1 has won the game',450, 100);
+        } else if(player2Score = winningScore) {
+            canvasContext.fillText('Player 2 has won the game',450, 100);
+        }
+        canvasContext.fillText('Click in order to continue', 450, 400);
         return;
     }
     // first paddle
@@ -172,4 +189,3 @@ function colorCircle(centerX, centerY, radius, drawColor) {
     canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
     canvasContext.fill();
 }
-
