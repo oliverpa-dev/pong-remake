@@ -9,14 +9,18 @@ var ballX = 50;
 var ballY = 50;
 
 // speed of the ball
-var ballSpeedX = 10;
+var ballSpeedX = 15;
 var ballSpeedY = 10;
 
 // players paddle
 var paddle1Y = 250;
 var paddle2Y = 250;
-const paddleHeight = 100;
+const paddleHeight = 150;
 const paddleThickness = 10;
+
+// player score
+var player1Score = 0;
+var player2Score = 0;
 
 // function that caluclates the position of our mouse 
 function calculateMousePosition(evt) {
@@ -37,17 +41,17 @@ function calculateMousePosition(evt) {
 function resetBall() {
     ballSpeedX = -ballSpeedX;
     ballX = canvas.width / 2;
-    bally = canvas.width / 2;
+    ballY = canvas.width / 2;
 }
 
 // function for the computer paddle
 function computerMovement() {
     // finding center of the right paddle
     var paddle2YCenter = paddle2Y + (paddleHeight/2);
-    if(paddle2YCenter < ballY - 35) {
-        paddle2Y += 10;
-    } else if(paddle2YCenter > ballY + 35) {
-        paddle2Y -= 10;
+    if(paddle2YCenter < ballY - 10) {
+        paddle2Y += 9;
+    } else if(paddle2YCenter > ballY + 10) {
+        paddle2Y -= 9;
     }
 }
 
@@ -86,8 +90,14 @@ function moveEverything() {
         // and bellow of the top of the battle, hit the ball
         if(ballY > paddle2Y && ballY < paddle2Y + paddleHeight) {
             ballSpeedX = -ballSpeedX;
+            // After it hits the paddle
+            // the horizontal direction changes regarding the hit marker on the paddle
+            // If it hits close to the edge, the ball reflects faster
+            var deltaY = ballY - (paddle2Y + paddleHeight/2);
+            ballSpeedY = deltaY * 0.35;
         } else {
             // else reset
+            player1Score++;
             resetBall();
         }
     }
@@ -100,8 +110,11 @@ function moveEverything() {
         // and bellow of the top of the battle, hit the ball
         if(ballY > paddle1Y && ballY < paddle1Y + paddleHeight) {
             ballSpeedX = -ballSpeedX;
+            var deltaY = ballY - (paddle1Y + paddleHeight/2);
+            ballSpeedY = deltaY * 0.35;
         } else {
             // else reset
+            player2Score++;
             resetBall();
         }
     }
@@ -121,6 +134,9 @@ function drawAllElements() {
     colorRect(canvas.width - 10, paddle2Y, paddleThickness, paddleHeight, 'white');
     // drawing the ball
     colorCircle(ballX, ballY, 10, 'white');
+    // create the text that will be displayed 
+    canvasContext.fillText(player1Score, 200, 100);
+    canvasContext.fillText(player2Score, canvas.width - 200, 100);
 }
 
 // function that simplifies the code for rect
