@@ -21,6 +21,8 @@ const paddleThickness = 10;
 // player score
 var player1Score = 0;
 var player2Score = 0;
+const winningScore = 3;
+var showWinningScreen = false;
 
 // function that caluclates the position of our mouse 
 function calculateMousePosition(evt) {
@@ -39,6 +41,11 @@ function calculateMousePosition(evt) {
 
 // function that resets the ball if it hits one of the sides
 function resetBall() {
+    if(player1Score >= winningScore || player2Score >= winningScore) {
+        player1Score = 0;
+        player2Score = 0;
+        showWinningScreen = true;
+    }
     ballSpeedX = -ballSpeedX;
     ballX = canvas.width / 2;
     ballY = canvas.width / 2;
@@ -57,6 +64,9 @@ function computerMovement() {
 
 // when the pages loads
 window.onload = function() {
+    if(showWinningScreen) {
+        return
+    }
     // get the html element with id of map
     canvas = document.getElementById('map');
     // context is for drawing graphics
@@ -112,11 +122,16 @@ function moveEverything() {
             ballSpeedX = -ballSpeedX;
             var deltaY = ballY - (paddle1Y + paddleHeight/2);
             ballSpeedY = deltaY * 0.35;
-        } else {
+        } else  {
             // else reset
             player2Score++;
             resetBall();
         }
+        // else {
+        //     console.log("Player two has won the game");
+        //     player2Score = 0;
+        //     resetBall();
+        // }
     }
     if(ballY < 0) {
         ballSpeedY = -ballSpeedY;
@@ -128,6 +143,11 @@ function drawAllElements() {
     // 0,0 is for x,y coordinates - top left corner
     // canvas.width, canvas-height - bottom right corner
     colorRect(0,0, canvas.width, canvas.height, 'black');
+    if(showWinningScreen) {
+        canvasContext.fillStyle = 'white';
+        canvasContext.fillText('press any key in order to continue',100,100);
+        return;
+    }
     // first paddle
     colorRect(0, paddle1Y, paddleThickness , paddleHeight, 'white');
     // second paddle
